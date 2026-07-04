@@ -1,0 +1,117 @@
+# AI 应用开发知识库
+
+## 第一章：大语言模型（LLM）基础
+
+大语言模型（Large Language Model，LLM）是通过海量文本数据训练得到的神经网络模型。
+2026 年主流的 LLM 包括：DeepSeek-V3、通义千问 Qwen3、GPT-5、Claude Opus 4.8 等。
+
+LLM 的核心能力是「预测下一个 token」。给定一段文本，模型会计算下一个最可能出现的词。
+通过数十亿参数的训练，模型学会了语法、推理、知识存储等能力。
+
+### Token 的概念
+Token 是 LLM 处理文本的最小单位。中文通常 1-2 个字符 = 1 token，英文约 1 个单词 = 1.3 token。
+qwen-plus 的上下文窗口为 131,072 token，约等于 10 万字中文。
+
+### Temperature 参数
+Temperature 控制输出的随机性：
+- 0.0~0.3：精确、可复现，适合代码生成和数据提取
+- 0.5~0.8：均衡自然，适合日常对话和写作
+- 1.0~1.5：天马行空，适合创意写作和头脑风暴
+
+## 第二章：Prompt 工程
+
+Prompt 工程是设计输入文本以引导 LLM 产生期望输出的技术。
+
+### System Prompt（系统提示词）
+System prompt 定义 AI 的角色、行为规则和输出格式。这是最有效的控制手段——
+AI 会非常认真地遵守 system prompt 中的指令。
+
+### 结构化输出
+让 AI 返回 JSON 而非自由文本，是「AI 应用开发」和「跟 AI 聊天」的分水岭。
+关键技巧：
+1. temperature 设为 0.1 以下，确保输出稳定
+2. 在 system prompt 中明确写「必须是纯 JSON」
+3. 提供 JSON 示例，AI 会照着你的结构填空
+
+### 思维链（Chain of Thought, CoT）
+让 AI「先思考，再回答」——在 prompt 末尾加上「请一步一步思考」。
+CoT 在数学推理、代码审查、复杂决策等场景提升显著。
+最简单的触发词就是「请一步一步思考」。
+
+## 第三章：RAG（检索增强生成）
+
+RAG 是 2026 年最核心的 AI 应用形态。它解决了 LLM 的两个根本问题：
+1. 知识截止日期（LLM 不知道训练数据之后的事）
+2. 幻觉问题（没有依据时 LLM 会编造）
+
+### RAG 的五个步骤
+1. Load：加载文档（PDF、TXT、Word、网页等）
+2. Split：将文档切割成小块（chunk）
+3. Embed：将每块文本转换为向量
+4. Store：存入向量数据库（如 Chroma）
+5. Retrieve：用户提问 → 向量检索相关 chunk → 拼接提示词 → LLM 生成
+
+### 文档切割的要点
+- chunk_size：每块最多多少字符。太小丢失上下文，太大检索不精准。推荐 300-800。
+- chunk_overlap：相邻块重叠多少字符。防止一句话被拦腰切断。推荐 chunk_size 的 10-20%。
+
+### 向量嵌入（Embedding）
+Embedding 将文字映射为一组固定维度的数字（向量）。
+语义相近的文字，向量在空间中距离也相近。
+百炼 text-embedding-v2 输出 1536 维向量。
+
+## 第四章：AI Agent
+
+AI Agent 是能自主使用工具、规划多步骤任务、反思执行结果的 AI 系统。
+
+### Agent 的核心循环
+1. Planning（规划）：分析任务，制定步骤
+2. Tool Use（工具调用）：调用搜索、计算、API 等工具
+3. Reflection（反思）：检查结果，决定是否调整计划
+
+### Function Calling
+Function Calling 是 LLM 调用外部工具的标准方式。
+你定义函数的名称、描述和参数 schema，LLM 会根据用户意图决定调用哪个函数、传什么参数。
+OpenAI、DeepSeek、Qwen 都支持 Function Calling。
+
+### 常见 Agent 工具
+- 搜索工具：Tavily、DuckDuckGo、Google Search
+- 计算工具：Python REPL、数学表达式求值
+- 数据库工具：SQL 查询、向量检索
+- API 工具：调用外部服务
+
+## 第五章：Streamlit 快速开发
+
+Streamlit 是纯 Python 的 Web 应用框架，零前端基础即可构建 AI 应用界面。
+
+### 核心组件
+- st.title() / st.caption()：标题和说明
+- st.text_area()：多行文本输入
+- st.button()：按钮
+- st.columns()：多栏布局
+- st.metric()：指标卡片
+- st.dataframe()：表格展示
+- st.spinner()：加载动画
+- st.expander()：折叠面板
+
+### Streamlit 的执行模型
+每次用户交互（点击按钮、输入文字），Streamlit 会从头到尾重新运行整个脚本。
+这意味着你需要理解「reactive 执行模型」，避免在每次重跑时重复调用 API。
+
+## 第六章：部署与工程化
+
+### 环境变量管理
+永远不要在代码中硬编码 API Key。使用 .env 文件 + python-dotenv 管理敏感信息。
+.gitignore 中必须包含 .env，防止密钥泄露到 GitHub。
+
+### API 调用的容错
+生产环境中，API 调用必须有异常处理和重试逻辑：
+- 分类处理错误：401（认证）、429（限流）、503（过载）、timeout
+- 指数退避重试：1s → 2s → 4s → 8s
+- 不可重试的错误（认证失败）直接放弃
+
+### 部署平台对比
+- HuggingFace Spaces：免费、简单，适合 Demo
+- Railway：支持 Docker，有免费额度
+- 阿里云函数计算：国内用户访问快，按量付费
+- 阿里云 SAE：Serverless 应用引擎，适合生产
