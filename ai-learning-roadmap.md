@@ -3,7 +3,7 @@
 > 起点：Python 基础 + C + Java + 数据库 | 嘉应学院软件工程 2027 届
 > 目标：AI 应用开发工程师（实习/应届），投递广深
 > 时间：2026 年 7 月开始，一个月高强度冲刺
-> 状态：🟢 进行中 | Day 2 完成，等待 Day 3
+> 状态：🟢 进行中 | Week 1 完成 ✅ | Week 2 即将开始
 
 ---
 
@@ -17,7 +17,7 @@
 | Day 4 | 2026-07-03 | AI 简历分析器 CLI 版 | ✅ 完成 | `day4_resume_analyzer.py` |
 | Day 5 | 2026-07-03 | 流式输出 + 异常处理 + 重试逻辑 | ✅ 完成 | `day5_streaming_robustness.py` `ai_utils.py` |
 | Day 6 | 2026-07-03 | Streamlit Web 界面 | ✅ 完成 | `day6_streamlit_app.py` |
-| Day 7 | — | 复盘 + GitHub 发布 | ⏳ 待开始 | — |
+| Day 7 | 2026-07-04 | 复盘 + GitHub 发布 | ✅ 完成 | `README.md` `docs/week1-review.md` `.env.example` `config.py` |
 
 ### 环境已就绪
 
