@@ -4,3 +4,11 @@
 openai>=2.0.0
 python-dotenv>=1.0.0
 streamlit>=1.50.0
+
+# Week 2 — RAG 系统
+langchain>=1.0.0
+langchain-community>=0.4.0
+langchain-openai>=1.0.0
+chromadb>=1.0.0
+pypdf>=6.0.0
+tiktoken>=0.13.0

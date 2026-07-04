@@ -18,6 +18,7 @@
 | Day 5 | 2026-07-03 | 流式输出 + 异常处理 + 重试逻辑 | ✅ 完成 | `day5_streaming_robustness.py` `ai_utils.py` |
 | Day 6 | 2026-07-03 | Streamlit Web 界面 | ✅ 完成 | `day6_streamlit_app.py` |
 | Day 7 | 2026-07-04 | 复盘 + GitHub 发布 | ✅ 完成 | `README.md` `docs/week1-review.md` `.env.example` `config.py` |
+| Day 8 | 2026-07-04 | RAG 入门：全流程概念 + 最简示例 | ✅ 完成 | `day8_rag_intro.py` |
 
 ### 环境已就绪
 
