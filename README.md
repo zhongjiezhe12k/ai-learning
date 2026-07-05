@@ -67,6 +67,14 @@ ai-learning/
 ├── day5_streaming_robustness.py    # Day 5 — 流式输出 + 重试 + 异常处理
 ├── day6_streamlit_app.py           # Day 6 — Streamlit Web 版 ⭐
 │
+├── day8_rag_intro.py               # Day 8 — RAG 入门（全流程 + 示例）
+├── day9_document_loader.py         # Day 9 — 文档加载 & 文本切割实战
+├── day10_embedding_chroma.py       # Day 10 — Embedding 深入 + Chroma 持久化
+│
+├── data/
+│   ├── ai_knowledge_base.txt       # 知识库文档（TXT）
+│   └── sample_ai_guide.pdf         # 示例 PDF 文档
+│
 ├── docs/
 │   └── week1-review.md             # Week 1 复盘文档
 │
@@ -89,9 +97,19 @@ ai-learning/
 | Day 6 | Web 界面 | Streamlit | `day6_streamlit_app.py` ⭐ |
 | Day 7 | 复盘 + GitHub | 代码整理 + 发布 | 本仓库 🎉 |
 
-### 🔜 Week 2：RAG 私有文档问答系统（7/5 — 7/11）
+### 🔜 Week 2：RAG 私有文档问答系统（7/4 — 7/11）
 
 > LangChain + Chroma + DeepSeek → 上传 PDF，AI 基于文档回答，标注来源
+
+| 天 | 内容 | 技能 | 产出 |
+|----|------|------|------|
+| Day 8 | RAG 入门 | 全流程概念 + 端到端示例 | `day8_rag_intro.py` |
+| Day 9 | 文档加载 | PDF/TXT 加载 + 文本切割 | `day9_document_loader.py` |
+| Day 10 | 向量嵌入 | Embedding + Chroma 持久化 | `day10_embedding_chroma.py` |
+| Day 11 | RAG 闭环 | 检索 + 生成 + 溯源 | ⏳ |
+| Day 12 | 检索优化 | chunk_size/overlap 调参 | ⏳ |
+| Day 13 | Web 界面 | Streamlit RAG 应用 | ⏳ |
+| Day 14 | 复盘 | Week 2 代码整理 | ⏳ |
 
 ### 🔜 Week 3：AI Agent 助手（7/12 — 7/18）
 

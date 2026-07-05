@@ -20,6 +20,7 @@
 | Day 7 | 2026-07-04 | 复盘 + GitHub 发布 | ✅ 完成 | `README.md` `docs/week1-review.md` `.env.example` `config.py` |
 | Day 8 | 2026-07-04 | RAG 入门：全流程概念 + 最简示例 | ✅ 完成 | `day8_rag_intro.py` |
 | Day 9 | 2026-07-04 | LangChain 加载 PDF/TXT + 文本切割 | ✅ 完成 | `day9_document_loader.py` |
+| Day 10 | 2026-07-05 | Embedding 深入 + Chroma 持久化存储 | ✅ 完成 | `day10_embedding_chroma.py` |
 
 ### 环境已就绪
 
