@@ -21,6 +21,7 @@
 | Day 8 | 2026-07-04 | RAG 入门：全流程概念 + 最简示例 | ✅ 完成 | `day8_rag_intro.py` |
 | Day 9 | 2026-07-04 | LangChain 加载 PDF/TXT + 文本切割 | ✅ 完成 | `day9_document_loader.py` |
 | Day 10 | 2026-07-05 | Embedding 深入 + Chroma 持久化存储 | ✅ 完成 | `day10_embedding_chroma.py` |
+| Day 11 | 2026-07-06 | RAG 核心闭环：检索 + 上下文拼接 + LLM 生成 | ✅ 完成 | `day11_rag_pipeline.py` |
 
 ### 环境已就绪
 
