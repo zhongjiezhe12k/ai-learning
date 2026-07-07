@@ -596,15 +596,24 @@ class VectorStore:
         self,
         query: str,
         top_k: int = 5,
-        min_similarity: float = 0.0,
+        min_similarity: float = -999.0,
     ) -> list[dict]:
         """
-        语义搜索
+        语义搜索（基于 Chroma L2 距离）
+
+        注意：Chroma 默认返回 L2 欧氏距离，不是余弦相似度。
+        1536 维向量的 L2 距离通常在 0.3~2.5 之间：
+          - 高度相关：distance ≈ 0.3~0.6  → similarity ≈ 0.4~0.7
+          - 中度相关：distance ≈ 0.6~1.0  → similarity ≈ 0.0~0.4
+          - 弱相关：  distance ≈ 1.0~1.5  → similarity ≈ -0.5~0.0
+          - 不相关：  distance ≈ 1.5~2.5  → similarity ≈ -1.5~-0.5
+
+        所以不要用 0.0 作为阈值，会误杀弱相关但仍有用的结果。
 
         参数：
           query          : 搜索文本
           top_k          : 返回最相似的 K 条
-          min_similarity : 最低相似度阈值（低于此值的结果被过滤）
+          min_similarity : 最低相似度阈值（L2-based，默认不过滤）
 
         返回：
           [{"text", "source", "page", "similarity"}, ...]
@@ -654,7 +663,7 @@ class VectorStore:
           (答案文本, [引用的来源列表])
         """
         # 1. 检索
-        sources = self.search(question, top_k=top_k, min_similarity=0.3)
+        sources = self.search(question, top_k=top_k)
 
         if not sources:
             return "抱歉，在知识库中没有找到相关内容。", []
