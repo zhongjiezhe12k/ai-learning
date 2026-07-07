@@ -63,7 +63,7 @@ for i, t in enumerate(test_texts):
     print(f"  文本 {i+1}：{t}")
 
 # ── 1.2 调用 Embedding API ──
-print("\n─" * 40)
+print("\n─" * 10)
 print("1.2 调用百炼 Embedding API")
 print("─" * 40)
 
@@ -81,7 +81,7 @@ print(f"  文本 2 的前 5 维：{[round(v, 4) for v in embeddings[1][:5]]}")
 print(f"  文本 3 的前 5 维：{[round(v, 4) for v in embeddings[2][:5]]}")
 
 # ── 1.3 计算余弦相似度 ──
-print("\n─" * 40)
+print("\n─" * 10)
 print("1.3 计算余弦相似度 —— 核心概念")
 print("─" * 40)
 print("""
@@ -154,11 +154,15 @@ print("─" * 40)
 
 CHROMA_PATH = "./chroma_db"
 
-# 清理旧数据（确保每次运行结果一致）
-import shutil
-if os.path.exists(CHROMA_PATH):
-    shutil.rmtree(CHROMA_PATH)
-    print(f"  已清理旧数据库：{CHROMA_PATH}")
+# 只清理实验 2 用到的 demo collection，不动其他数据
+# ❌ 不要 shutil.rmtree(CHROMA_PATH) —— 那样会把后面实验的知识库也删掉！
+persistent_client_temp = chromadb.PersistentClient(path=CHROMA_PATH)
+try:
+    persistent_client_temp.delete_collection("demo_kb")
+    print(f"  已清理旧的 demo_kb collection（不影响其他数据）")
+except:
+    pass  # 第一次运行没有这个 collection，忽略错误
+del persistent_client_temp
 
 # 创建持久化客户端
 persistent_client = chromadb.PersistentClient(path=CHROMA_PATH)
@@ -193,7 +197,7 @@ print(f"  ✅ 已存入 {collection.count()} 条记录")
 print(f"  Collection 名称：{collection.name}")
 
 # ── 2.2 验证持久化：关闭再打开 ──
-print("\n─" * 40)
+print("\n─" * 10)
 print("2.2 验证持久化 —— 关闭客户端再重新打开")
 print("─" * 40)
 
@@ -311,7 +315,7 @@ total_chars = sum(len(c["text"]) for c in chunks)
 print(f"\n  总字符数：{total_chars}，平均每块：{total_chars/len(chunks):.0f} 字")
 
 # ── 3.1 批量 Embedding ──
-print("\n─" * 40)
+print("\n─" * 10)
 print("3.1 批量向量化所有 chunk")
 print("─" * 40)
 
@@ -336,7 +340,7 @@ for i in range(0, len(chunks), BATCH_SIZE):
 print(f"\n  ✅ 向量化完成！{len(all_embeddings)} 个向量，每个 {len(all_embeddings[0])} 维")
 
 # ── 3.2 存入 Chroma ──
-print("\n─" * 40)
+print("\n─" * 10)
 print("3.2 存入 Chroma 持久化数据库")
 print("─" * 40)
 
@@ -545,6 +549,10 @@ class VectorStore:
                 metadata={"description": "AI 知识库"},
             )
             print(f"  🗑️  已清空 {count_before} 条旧记录")
+        elif self.collection.count() > 0:
+            print(f"  ⏭️  知识库已有 {self.collection.count()} 条记录，跳过入库。")
+            print(f"      如需强制重新入库，请使用 clear_existing=True")
+            return 0
 
         # 1. 加载 + 切割
         chunks = load_and_split_directory(directory, chunk_size, chunk_overlap)
@@ -706,7 +714,7 @@ class VectorStore:
 
 
 # ── 测试 VectorStore ──
-print("\n─" * 40)
+print("\n─" * 10)
 print("测试 VectorStore 类")
 print("─" * 40)
 print()
@@ -715,7 +723,8 @@ print()
 store = VectorStore("./chroma_db/vs_test", "test_kb")
 
 print("\n📥 导入文档...")
-added = store.ingest_directory("data", chunk_size=300, chunk_overlap=40, clear_existing=True)
+# 首次运行会入库，再次运行会跳过（因为数据已存在）
+added = store.ingest_directory("data", chunk_size=300, chunk_overlap=40, clear_existing=False)
 
 print("\n📊 知识库统计：")
 stats = store.get_stats()
