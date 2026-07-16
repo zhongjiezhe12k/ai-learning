@@ -113,6 +113,8 @@ ai-learning/
 ├── day12_retrieval_tuning.py       # Day 12 — 检索质量调优（网格搜索+指标）
 ├── day13_rag_webapp.py             # Day 13 — Streamlit RAG Web 界面 ⭐
 │
+├── day15_agent_intro.py            # Day 15 — Agent 概念 + Function Calling
+│
 ├── data/
 │   ├── ai_knowledge_base.txt       # 知识库文档（TXT）
 │   └── sample_ai_guide.pdf         # 示例 PDF 文档
@@ -154,9 +156,19 @@ ai-learning/
 | Day 13 | Web 界面 | Streamlit RAG 应用 | `day13_rag_webapp.py` ⭐ |
 | Day 14 | 复盘 + GitHub | Week 2 代码整理 | 本仓库 🎉 |
 
-### 🔜 Week 3：AI Agent 助手（7/17 — 7/23）
+### 🔜 Week 3：AI Agent 助手（7/16 — 7/22）
 
 > Function Calling + 多工具串联 → Agent 自主搜索网页、执行计算、查询知识库
+
+| 天 | 内容 | 技能 | 产出 |
+|----|------|------|------|
+| Day 15 | Agent 入门 | Function Calling + Agent 循环 | `day15_agent_intro.py` ✅ |
+| Day 16 | 网页搜索 | Agent + Tavily/DuckDuckGo | ⏳ |
+| Day 17 | 代码执行 | Agent + Python REPL | ⏳ |
+| Day 18 | 多工具串联 | Agent 自主选择工具 | ⏳ |
+| Day 19 | Web 界面 | Streamlit Agent 可视化 | ⏳ |
+| Day 20 | Agent + RAG | 知识库 + 搜索混合 | ⏳ |
+| Day 21 | 复盘 | Week 3 代码整理 | ⏳ |
 
 ### 🔜 Week 4：全栈整合部署（7/19 — 7/25）
 

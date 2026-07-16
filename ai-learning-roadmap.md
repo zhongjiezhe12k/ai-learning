@@ -3,7 +3,7 @@
 > 起点：Python 基础 + C + Java + 数据库 | 嘉应学院软件工程 2027 届
 > 目标：AI 应用开发工程师（实习/应届），投递广深
 > 时间：2026 年 7 月开始，一个月高强度冲刺
-> 状态：🟢 进行中 | Week 1 完成 ✅ | Week 2 完成 ✅ | Week 3 即将开始
+> 状态：🟢 进行中 | Week 1 完成 ✅ | Week 2 完成 ✅ | Week 3 进行中 🚀
 
 ---
 
@@ -25,6 +25,7 @@
 | Day 12 | 2026-07-08 | RAG 检索质量调优：chunk_size / overlap / 相似度阈值 | ✅ 完成 | `day12_retrieval_tuning.py` |
 | Day 13 | 2026-07-08 | ⭐ Streamlit RAG Web 界面：文档上传 → 问答 + 原文溯源 | ✅ 完成 | `day13_rag_webapp.py` |
 | Day 14 | 2026-07-16 | 周末复盘 + 代码整理 + GitHub 发布 | ✅ 完成 | `docs/week2-review.md`、README 更新 |
+| Day 15 | 2026-07-16 | Agent 概念：Planning → Tool Use → Reflection + Function Calling | ✅ 完成 | `day15_agent_intro.py` |
 
 ### 环境已就绪
 
