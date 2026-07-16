@@ -3,7 +3,7 @@
 > 起点：Python 基础 + C + Java + 数据库 | 嘉应学院软件工程 2027 届
 > 目标：AI 应用开发工程师（实习/应届），投递广深
 > 时间：2026 年 7 月开始，一个月高强度冲刺
-> 状态：🟢 进行中 | Week 1 完成 ✅ | Week 2 即将开始
+> 状态：🟢 进行中 | Week 1 完成 ✅ | Week 2 完成 ✅ | Week 3 即将开始
 
 ---
 
@@ -22,6 +22,9 @@
 | Day 9 | 2026-07-04 | LangChain 加载 PDF/TXT + 文本切割 | ✅ 完成 | `day9_document_loader.py` |
 | Day 10 | 2026-07-05 | Embedding 深入 + Chroma 持久化存储 | ✅ 完成 | `day10_embedding_chroma.py` |
 | Day 11 | 2026-07-06 | RAG 核心闭环：检索 + 上下文拼接 + LLM 生成 | ✅ 完成 | `day11_rag_pipeline.py` |
+| Day 12 | 2026-07-08 | RAG 检索质量调优：chunk_size / overlap / 相似度阈值 | ✅ 完成 | `day12_retrieval_tuning.py` |
+| Day 13 | 2026-07-08 | ⭐ Streamlit RAG Web 界面：文档上传 → 问答 + 原文溯源 | ✅ 完成 | `day13_rag_webapp.py` |
+| Day 14 | 2026-07-16 | 周末复盘 + 代码整理 + GitHub 发布 | ✅ 完成 | `docs/week2-review.md`、README 更新 |
 
 ### 环境已就绪
 

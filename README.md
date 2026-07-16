@@ -47,6 +47,45 @@ python day4_resume_analyzer.py --demo
 
 ---
 
+## 📊 Week 2 成果：RAG 私有文档 AI 问答系统 ⭐
+
+第二个完整 AI 应用 — 上传 PDF/TXT → AI 基于文档内容回答 → 每个回答标注原文来源。这是 2026 年最核心的 AI 应用形态。
+
+```
+┌─────────────────────────────────────────────────┐
+│  📚 私有文档 AI 问答系统                           │
+│  ┌────────────┐  ┌──────────────────────────┐    │
+│  │  📁 上传    │  │  💬 聊天问答              │    │
+│  │  PDF/TXT   │  │  ┌──────────────────────┐│    │
+│  │            │  │  │ 用户：AI 行业发展如何  ││    │
+│  │  参数控制   │  │  │ AI：根据资料显示...[1]  ││    │
+│  │  chunk/    │  │  │                       ││    │
+│  │  overlap   │  │  │ 📎 查看引用来源(5条)   ││    │
+│  │            │  │  │  [资料1] ai_guide.pdf ││    │
+│  │  知识库状态  │  │  │  相似度 0.92       ││    │
+│  └────────────┘  │  └──────────────────────┘│    │
+│                   └──────────────────────────┘    │
+└─────────────────────────────────────────────────┘
+```
+
+**技术亮点**：
+- 全流程 RAG 管线：LangChain Loader → TextSplitter → Embedding → Chroma → LLM 生成
+- 检索质量调优：网格搜索 + Hit@K/MRR 评估指标，找到最优参数
+- 持久化向量存储：重启不丢数据
+- 流式 RAG 回答 + 原文溯源
+
+### 快速启动
+
+```bash
+# 启动 RAG 文档问答系统
+streamlit run day13_rag_webapp.py
+
+# 或命令行运行完整 RAG 管线
+python day11_rag_pipeline.py
+```
+
+---
+
 ## 📁 项目结构
 
 ```
@@ -70,13 +109,17 @@ ai-learning/
 ├── day8_rag_intro.py               # Day 8 — RAG 入门（全流程 + 示例）
 ├── day9_document_loader.py         # Day 9 — 文档加载 & 文本切割实战
 ├── day10_embedding_chroma.py       # Day 10 — Embedding 深入 + Chroma 持久化
+├── day11_rag_pipeline.py           # Day 11 — RAG 核心闭环（检索+生成+溯源）
+├── day12_retrieval_tuning.py       # Day 12 — 检索质量调优（网格搜索+指标）
+├── day13_rag_webapp.py             # Day 13 — Streamlit RAG Web 界面 ⭐
 │
 ├── data/
 │   ├── ai_knowledge_base.txt       # 知识库文档（TXT）
 │   └── sample_ai_guide.pdf         # 示例 PDF 文档
 │
 ├── docs/
-│   └── week1-review.md             # Week 1 复盘文档
+│   ├── week1-review.md             # Week 1 复盘文档
+│   └── week2-review.md             # Week 2 复盘文档
 │
 └── ai-learning-roadmap.md          # 30 天学习路线图
 ```
@@ -97,21 +140,21 @@ ai-learning/
 | Day 6 | Web 界面 | Streamlit | `day6_streamlit_app.py` ⭐ |
 | Day 7 | 复盘 + GitHub | 代码整理 + 发布 | 本仓库 🎉 |
 
-### 🔜 Week 2：RAG 私有文档问答系统（7/4 — 7/11）
+### ✅ Week 2：RAG 私有文档问答系统（7/4 — 7/8）
 
-> LangChain + Chroma + DeepSeek → 上传 PDF，AI 基于文档回答，标注来源
+> LangChain + Chroma + 通义千问 → 上传 PDF，AI 基于文档回答，标注来源。**4181 行代码。**
 
 | 天 | 内容 | 技能 | 产出 |
 |----|------|------|------|
 | Day 8 | RAG 入门 | 全流程概念 + 端到端示例 | `day8_rag_intro.py` |
 | Day 9 | 文档加载 | PDF/TXT 加载 + 文本切割 | `day9_document_loader.py` |
 | Day 10 | 向量嵌入 | Embedding + Chroma 持久化 | `day10_embedding_chroma.py` |
-| Day 11 | RAG 闭环 | 检索 + 生成 + 溯源 | ⏳ |
-| Day 12 | 检索优化 | chunk_size/overlap 调参 | ⏳ |
-| Day 13 | Web 界面 | Streamlit RAG 应用 | ⏳ |
-| Day 14 | 复盘 | Week 2 代码整理 | ⏳ |
+| Day 11 | RAG 闭环 | 检索 + 生成 + 溯源 | `day11_rag_pipeline.py` |
+| Day 12 | 检索优化 | chunk_size/overlap 网格搜索 | `day12_retrieval_tuning.py` |
+| Day 13 | Web 界面 | Streamlit RAG 应用 | `day13_rag_webapp.py` ⭐ |
+| Day 14 | 复盘 + GitHub | Week 2 代码整理 | 本仓库 🎉 |
 
-### 🔜 Week 3：AI Agent 助手（7/12 — 7/18）
+### 🔜 Week 3：AI Agent 助手（7/17 — 7/23）
 
 > Function Calling + 多工具串联 → Agent 自主搜索网页、执行计算、查询知识库
 
