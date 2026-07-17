@@ -102,74 +102,191 @@ print("─" * 50)
 print("2.1 搜索引擎选型对比")
 print()
 print("""
-  方案 A：Tavily Search API
-    ✅ 专为 AI Agent 设计，返回格式化结果
-    ❌ 需要 API Key，每月 1000 次免费额度
+  方案 A：Tavily Search API（海外）
+    ✅ 专为 AI Agent 设计
+    ❌ 需要 API Key，且是国外服务
 
-  方案 B：DuckDuckGo（我们今天用的）
-    ✅ 完全免费，无需 API Key，无次数限制
-    ✅ Python 库 ddgs 一行调用
-    ⚠️ 有时不稳定（免费服务的代价）
+  方案 B：DDGS / DuckDuckGo（海外）
+    ✅ 免费无需 Key
+    ❌ 底层访问 duckduckgo.com，国内被墙，一次搜索 17-25 秒
 
-  方案 C：Google Custom Search API
-    ✅ 搜索质量最高
-    ❌ 需要 API Key + 每天 100 次免费额度
+  方案 C：国内搜索引擎（我们今天用的）
+    ✅ 国内直连，0.5-1.5 秒响应
+    ✅ 无需 API Key，无次数限制
+    ✅ 支持多平台切换（百度/Bing中国/哔哩哔哩/搜狗）
 
-  选 DuckDuckGo 的理由：零成本入门，代码逻辑和切换 Tavily 完全一样。
+  选用国内方案的理由：快 20 倍，且和切换 Tavily 的代码逻辑完全一致。
 """)
 
-# ── 2.2 安装和测试 ──
+# ── 2.2 国内多平台搜索架构 ──
 print("─" * 50)
-print("2.2 测试 DuckDuckGo 搜索")
-print()
-print("  安装：pip install ddgs")
+print("2.2 国内搜索平台对比 + 架构设计")
 print()
 
-from ddgs import DDGS
+import requests
+from bs4 import BeautifulSoup
 
-def raw_web_search(query: str, max_results: int = 5, timeout: float = 8.0) -> list[dict]:
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+}
+
+# 哔哩哔哩需要额外的 Referer 头
+BILIBILI_HEADERS = {
+    **HEADERS,
+    "Referer": "https://www.bilibili.com/",
+}
+
+# ╔══════════════════════════════════════════════════════════════╗
+# ║  🔧 平台配置区 —— 想换搜索平台？改这里就行！                   ║
+# ║                                                              ║
+# ║  每个平台需要两个东西：                                        ║
+# ║    1. url:     搜索 URL，用 {query} 作为关键词占位符            ║
+# ║    2. parser:  解析函数，输入 requests.Response，输出结果列表    ║
+# ║                                                              ║
+# ║  返回格式统一为: [{"title": "标题", "body": "摘要", "href": "链接"}] ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+# ── 平台1: Bing 中国版 — 通用搜索首选 ──
+def _parse_bing(response) -> list[dict]:
+    """解析 Bing 中国版搜索结果"""
+    soup = BeautifulSoup(response.text, 'html.parser')
+    results = []
+    for item in soup.select('li.b_algo')[:10]:
+        title_el = item.select_one('h2 a')
+        body_el = item.select_one('.b_caption p, .b_lineclamp2')
+        if title_el:
+            results.append({
+                "title": title_el.get_text(strip=True),
+                "body": body_el.get_text(strip=True) if body_el else "",
+                "href": title_el.get('href', ''),
+            })
+    return results
+
+# ── 平台2: 哔哩哔哩 — 视频/教程/评测类搜索首选 ──
+def _parse_bilibili(response) -> list[dict]:
+    """解析哔哩哔哩搜索结果（JSON API，无需解析 HTML）"""
+    data = response.json()
+    results = []
+    for r in data.get("data", {}).get("result", [])[:10]:
+        # 去除 HTML 标签
+        title = r.get("title", "").replace('<em class="keyword">', '').replace('</em>', '')
+        desc = r.get("description", "")[:80]
+        results.append({
+            "title": title,
+            "body": f"播放:{r.get('play',0)} | 弹幕:{r.get('video_review',0)} | {desc}",
+            "href": f"https://www.bilibili.com/video/{r.get('bvid', '')}",
+        })
+    return results
+
+# ── 平台3: 搜狗搜索 — 微信文章/中文内容搜索 ──
+def _parse_sogou(response) -> list[dict]:
+    """解析搜狗搜索结果"""
+    soup = BeautifulSoup(response.text, 'html.parser')
+    results = []
+    for item in soup.select('.vrwrap, .rb')[:10]:
+        title_el = item.select_one('.vr-title a, h3 a')
+        body_el = item.select_one('.star-wiki, .str-text, .space-txt')
+        if title_el:
+            results.append({
+                "title": title_el.get_text(strip=True),
+                "body": body_el.get_text(strip=True) if body_el else "",
+                "href": title_el.get('href', ''),
+            })
+    return results
+
+# ╔══════════════════════════════════════════════════════════════╗
+# ║  搜索引擎注册表 —— 添加新平台只需在这里加一行                   ║
+# ╚══════════════════════════════════════════════════════════════╝
+SEARCH_ENGINES = {
+    "bing": {
+        "name": "Bing 中国版",
+        "url": "https://cn.bing.com/search?q={query}&ensearch=1",
+        "parser": _parse_bing,
+    },
+    "bilibili": {
+        "name": "哔哩哔哩",
+        "url": "https://api.bilibili.com/x/web-interface/search/type?search_type=video&keyword={query}",
+        "parser": _parse_bilibili,
+    },
+    "sogou": {
+        "name": "搜狗搜索",
+        "url": "https://www.sogou.com/web?query={query}",
+        "parser": _parse_sogou,
+    },
+}
+
+# 默认搜索引擎
+DEFAULT_ENGINE = "bing"
+
+print("  已注册搜索引擎：")
+for key, engine in SEARCH_ENGINES.items():
+    marker = " ← 默认" if key == DEFAULT_ENGINE else ""
+    print(f"    {key}: {engine['name']}{marker}")
+print()
+print("  切换方法：")
+print("    搜索时传参 engine='bilibili' 即可切换")
+print("    添加新平台：在 SEARCH_ENGINES 字典加一项 + 写一个 _parse_xxx 函数")
+
+# ── 2.3 统一搜索入口 ──
+print("\n" + "─" * 50)
+print("2.3 统一搜索入口 —— 替换原来的 raw_web_search")
+print()
+
+def raw_web_search(query: str, max_results: int = 5,
+                   engine: str = None, timeout: float = 8.0) -> list[dict]:
     """
-    原始网页搜索 —— 返回结构化结果列表。
+    统一搜索入口 —— 支持多平台切换。
 
     参数：
       query       : 搜索关键词
       max_results : 最大返回条数
-      timeout     : 超时时间（秒），默认8秒
+      engine      : 搜索引擎名。可选: bing / bilibili / sogou。默认 bing。
+      timeout     : 超时时间（秒）
 
     返回：
-      [{"title": "标题", "body": "摘要", "href": "URL"}, ...]
+      [{"title": "...", "body": "...", "href": "..."}, ...]
     """
-    import threading
+    engine = engine or DEFAULT_ENGINE
 
-    result_container = []
-    exception_container = []
+    if engine not in SEARCH_ENGINES:
+        return [{"title": "错误", "body": f"未知搜索引擎 '{engine}'，可选：{list(SEARCH_ENGINES.keys())}", "href": ""}]
 
-    def _search():
-        try:
-            results = list(DDGS().text(query, max_results=max_results))
-            result_container.extend([
-                {"title": r["title"], "body": r["body"], "href": r["href"]}
-                for r in results
-            ])
-        except Exception as e:
-            exception_container.append(e)
+    cfg = SEARCH_ENGINES[engine]
+    url = cfg["url"].format(query=query)
 
-    thread = threading.Thread(target=_search, daemon=True)
-    thread.start()
-    thread.join(timeout=timeout)
+    # B站需要 Referer 头，其他平台用默认 headers
+    hdrs = BILIBILI_HEADERS if engine == "bilibili" else HEADERS
 
-    if thread.is_alive():
-        return [{"title": "搜索超时", "body": f"搜索「{query}」超时（{timeout}秒），请重试或简化关键词", "href": ""}]
-    if exception_container:
-        return [{"title": "搜索失败", "body": str(exception_container[0]), "href": ""}]
-    if not result_container:
-        return [{"title": "无结果", "body": f"搜索「{query}」未找到结果", "href": ""}]
-    return result_container
+    try:
+        resp = requests.get(url, headers=hdrs, timeout=timeout)
+        resp.raise_for_status()
+        results = cfg["parser"](resp)
+        return results[:max_results] if results else [
+            {"title": "无结果", "body": f"「{query}」未找到相关结果", "href": ""}
+        ]
+    except requests.Timeout:
+        return [{"title": "搜索超时", "body": f"搜索「{query}」超时（{timeout}秒）", "href": ""}]
+    except Exception as e:
+        return [{"title": "搜索失败", "body": str(e), "href": ""}]
 
-# 测试搜索
+# 测试各平台搜索速度
 test_query = "2026年高考数学难度"
 print(f"  搜索关键词：「{test_query}」")
 print()
+
+for eng_key in ["bing", "bilibili", "sogou"]:
+    import time
+    start = time.time()
+    results = raw_web_search(test_query, max_results=2, engine=eng_key)
+    elapsed = time.time() - start
+    name = SEARCH_ENGINES[eng_key]["name"]
+    if results and results[0].get("title") not in ("搜索超时", "搜索失败", "错误"):
+        print(f"  ✅ {name}: {elapsed:.1f}s, {len(results)}条结果")
+    else:
+        print(f"  ❌ {name}: {elapsed:.1f}s, {results[0].get('title', '?')}")
+
+# 用默认引擎展示详细结果
+print(f"\n  ── 默认引擎（{SEARCH_ENGINES[DEFAULT_ENGINE]['name']}）搜索详情 ──")
 results = raw_web_search(test_query, max_results=3)
 for i, r in enumerate(results, 1):
     title = r['title'][:60] + "..." if len(r['title']) > 60 else r['title']
@@ -179,28 +296,21 @@ for i, r in enumerate(results, 1):
     print(f"      🔗 {r['href']}")
     print()
 
-# ── 2.3 格式化为 LLM 友好格式 ──
+# ── 2.4 格式化为 LLM 友好格式 ──
 print("─" * 50)
-print("2.3 格式化搜索结果 —— 让 LLM 高效消费")
+print("2.4 格式化搜索结果 —— 让 LLM 高效消费")
 print()
-print("  原始搜索结果太冗长，必须格式化后才能放进 LLM 上下文。")
 
 def format_search_results(results: list[dict], max_body_len: int = 150) -> str:
     """
     将搜索结果格式化为 LLM 友好的文本。
-
-    参数：
-      results      : raw_web_search() 的返回结果
-      max_body_len : 每条摘要的最大字符数
-
-    返回：
-      格式化后的文本，可直接放入 LLM 上下文
     """
     if not results:
         return "（未找到相关搜索结果）"
 
-    if results[0].get("title") == "搜索失败":
-        return f"（搜索失败：{results[0]['body']}）"
+    title = results[0].get("title", "")
+    if title in ("搜索失败", "搜索超时", "错误", "无结果"):
+        return f"（{title}：{results[0]['body']}）"
 
     parts = []
     for i, r in enumerate(results, 1):
@@ -213,17 +323,16 @@ def format_search_results(results: list[dict], max_body_len: int = 150) -> str:
 formatted = format_search_results(results)
 print(f"\n  格式化后的搜索结果（共 {len(formatted)} 字符）：")
 print(f"  {'─' * 50}")
-# 显示前 400 字符
 print(f"  {formatted[:400]}...")
 print()
-print("  关键点：")
-print("    - 每条摘要限制 150 字符，节省上下文空间")
-print("    - 编号 [1][2][3] 方便 LLM 引用来源")
-print("    - 保留 URL，用户想深入了解可以点")
+print("  关键设计：")
+print("    - 每个平台只需实现「URL模板」+「HTML/JSON解析函数」")
+print("    - 切换平台 = 改 DEFAULT_ENGINE 或传参 engine='bilibili'")
+print("    - 添加新平台 = SEARCH_ENGINES 加一项 + 写一个 _parse_xxx 函数")
 
-# ── 2.4 封装为 Agent 工具 ──
+# ── 2.5 封装为 Agent 工具 ──
 print("\n" + "─" * 50)
-print("2.4 封装为 Agent 工具函数")
+print("2.5 封装为 Agent 工具函数")
 print()
 
 def web_search(query: str, max_results: int = 5) -> str:
@@ -241,7 +350,8 @@ WEB_SEARCH_TOOL = {
     "function": {
         "name": "web_search",
         "description": (
-            "搜索互联网获取实时信息。当用户询问最新新闻、当前事件、"
+            "搜索互联网获取实时信息。后端使用国内搜索引擎（Bing中国/哔哩哔哩/搜狗），"
+            "速度快（<2秒）。当用户询问最新新闻、当前事件、"
             "实时数据、或任何你不知道的时效性信息时，必须使用此工具。"
             "不要凭记忆回答需要实时信息的问题。"
         ),
@@ -250,7 +360,7 @@ WEB_SEARCH_TOOL = {
             "properties": {
                 "query": {
                     "type": "string",
-                    "description": "搜索关键词。用英文搜索通常效果更好。精炼到5-10个词。"
+                    "description": "搜索关键词。中文搜索效果更好。精炼到5-15个字。"
                 },
                 "max_results": {
                     "type": "integer",
