@@ -26,6 +26,7 @@
 | Day 13 | 2026-07-08 | ⭐ Streamlit RAG Web 界面：文档上传 → 问答 + 原文溯源 | ✅ 完成 | `day13_rag_webapp.py` |
 | Day 14 | 2026-07-16 | 周末复盘 + 代码整理 + GitHub 发布 | ✅ 完成 | `docs/week2-review.md`、README 更新 |
 | Day 15 | 2026-07-16 | Agent 概念：Planning → Tool Use → Reflection + Function Calling | ✅ 完成 | `day15_agent_intro.py` |
+| Day 16 | 2026-07-17 | 实现第一个 Tool：网页搜索（DuckDuckGo）+ Agent 搜索实战 | ✅ 完成 | `day16_agent_search.py` |
 
 ### 环境已就绪
 

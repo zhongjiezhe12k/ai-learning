@@ -12,3 +12,6 @@ langchain-openai>=1.0.0
 chromadb>=1.0.0
 pypdf>=6.0.0
 tiktoken>=0.13.0
+
+# Week 3 — Agent 系统
+ddgs>=9.0.0

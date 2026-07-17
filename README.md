@@ -114,6 +114,7 @@ ai-learning/
 ├── day13_rag_webapp.py             # Day 13 — Streamlit RAG Web 界面 ⭐
 │
 ├── day15_agent_intro.py            # Day 15 — Agent 概念 + Function Calling
+├── day16_agent_search.py           # Day 16 — Agent + 网页搜索工具
 │
 ├── data/
 │   ├── ai_knowledge_base.txt       # 知识库文档（TXT）
@@ -163,7 +164,7 @@ ai-learning/
 | 天 | 内容 | 技能 | 产出 |
 |----|------|------|------|
 | Day 15 | Agent 入门 | Function Calling + Agent 循环 | `day15_agent_intro.py` ✅ |
-| Day 16 | 网页搜索 | Agent + Tavily/DuckDuckGo | ⏳ |
+| Day 16 | 网页搜索 | Agent + DuckDuckGo 搜索 | `day16_agent_search.py` ✅ |
 | Day 17 | 代码执行 | Agent + Python REPL | ⏳ |
 | Day 18 | 多工具串联 | Agent 自主选择工具 | ⏳ |
 | Day 19 | Web 界面 | Streamlit Agent 可视化 | ⏳ |
