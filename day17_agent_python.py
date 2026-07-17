@@ -253,7 +253,7 @@ r3 = python_repl("print(1 + )")
 print(f"  🐛 语法错误被捕获：{r3.split(chr(10))[0]}")
 
 # 测试4：无限循环保护说明
-print(f"  ⏱️  超时保护：{timeout_seconds}秒（由其进程/线程限制保证）")
+print(f"  ⏱️  超时保护：5秒（由线程超时机制保证）")
 
 print()
 print("  关键设计决策：")
