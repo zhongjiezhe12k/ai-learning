@@ -62,7 +62,7 @@ print("=" * 65)
 print()
 
 # 问一个明显需要实时信息的问题
-question = "2026年7月到今天为止，中国A股市场最大的新闻是什么？"
+question = "2026年高考数学难度怎么样？和往年比有什么变化？"
 print(f"🤔 测试问题：{question}")
 print()
 
@@ -167,7 +167,7 @@ def raw_web_search(query: str, max_results: int = 5, timeout: float = 8.0) -> li
     return result_container
 
 # 测试搜索
-test_query = "2026年7月 AI 行业新闻"
+test_query = "2026年高考数学难度"
 print(f"  搜索关键词：「{test_query}」")
 print()
 results = raw_web_search(test_query, max_results=3)
@@ -476,7 +476,7 @@ print("║  场景 A：无搜索 Agent（禁掉 web_search）")
 print("╚" + "═" * 55 + "╝")
 
 # 选一个明显的实时问题
-real_time_question = "2026年7月最新的AI行业重大新闻有哪些？请列出2-3条。"
+real_time_question = "2026年高考数学难度如何？请搜索相关信息并总结。"
 
 result_no_search = run_agent(
     real_time_question,
