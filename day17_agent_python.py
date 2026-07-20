@@ -500,23 +500,49 @@ print("实验 4：Python + 搜索协同 —— Agent 的终极形态")
 print("=" * 65)
 print()
 
-# 添加搜索工具（复用 Day 16，但简化版不用外部模块）
+# 添加搜索工具（B站 API + 时间戳校验）
 def quick_search(query: str) -> str:
-    """简化版搜索（避免 Day 16 模块依赖，演示协同逻辑）"""
+    """通过B站API搜索视频，返回标题+发布时间+描述"""
     try:
         import requests
-        from bs4 import BeautifulSoup
-        url = f"https://cn.bing.com/search?q={query}&ensearch=1"
-        headers = {"User-Agent": "Mozilla/5.0"}
-        resp = requests.get(url, headers=headers, timeout=8)
-        soup = BeautifulSoup(resp.text, 'html.parser')
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "Referer": "https://www.bilibili.com/",
+        }
+        url = f"https://api.bilibili.com/x/web-interface/search/type?search_type=video&keyword={query}&order=pubdate"
+        resp = requests.get(url, headers=headers, timeout=6)
+
+        if resp.status_code != 200:
+            return f"搜索失败：HTTP {resp.status_code}"
+        if not resp.text.strip():
+            return "搜索失败：B站返回空响应（可能触发反爬）"
+
+        try:
+            data = resp.json()
+        except Exception:
+            return f"搜索失败：B站返回非JSON数据（{resp.text[:100]}）"
+
+        if data.get("code") != 0:
+            return f"搜索失败：{data.get('message', '未知错误')}"
+
+        raw = data.get("data", {}).get("result", [])[:3]
+
+        if not raw:
+            return "未找到结果"
+
         results = []
-        for item in soup.select('li.b_algo')[:3]:
-            t = item.select_one('h2 a')
-            b = item.select_one('.b_caption p')
-            if t:
-                results.append(f"[{len(results)+1}] {t.get_text(strip=True)}\n   {b.get_text(strip=True) if b else ''}")
-        return "\n\n".join(results) if results else "未找到结果"
+        for r in raw:
+            title = r.get("title", "").replace('<em class="keyword">', '').replace('</em>', '')
+            pubdate_ts = r.get("pubdate", 0)
+            from datetime import datetime as _dt_inner
+            pub_str = _dt_inner.fromtimestamp(pubdate_ts).strftime("%Y-%m-%d") if pubdate_ts else "未知"
+            results.append(
+                f"[{len(results)+1}] {title}\n"
+                f"   📅{pub_str} | {r.get('description','')[:80]}"
+            )
+        return "(来源：哔哩哔哩 · 最新发布)\n\n" + "\n\n".join(results)
+
     except Exception as e:
         return f"搜索失败: {e}"
 

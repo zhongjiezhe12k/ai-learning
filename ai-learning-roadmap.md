@@ -28,6 +28,8 @@
 | Day 15 | 2026-07-16 | Agent 概念：Planning → Tool Use → Reflection + Function Calling | ✅ 完成 | `day15_agent_intro.py` |
 | Day 16 | 2026-07-17 | 实现第一个 Tool：网页搜索（Bing中国+B站+搜狗）+ Agent 搜索实战 | ✅ 完成 | `day16_agent_search.py` |
 | Day 17 | 2026-07-17 | Agent + Python 代码执行沙箱：数据处理、自我调试 | ✅ 完成 | `day17_agent_python.py` |
+| Day 18 | 2026-07-18 | 多工具串联：Agent 自主编排（意图识别 + Plan-Execute + Self-Reflection） | ✅ 完成 | `day18_agent_orchestration.py` |
+| Day 19 | 2026-07-19 | Streamlit Agent 可视化：推理链条 + 工具调用实时监控 | ✅ 完成 | `day19_agent_visual.py` |
 
 ### 环境已就绪
 
@@ -105,8 +107,8 @@
 | Day 15 | 理解 Agent 概念：Planning → Tool Use → Reflection。什么是 Function Calling | Agent 调用一个 Tool |
 | Day 16 | 实现第一个 Tool：让 Agent 搜索网页（Tavily / DuckDuckGo） | Agent + 搜索 |
 | Day 17 | 实现第二个 Tool：让 Agent 执行 Python 代码/数学计算 | Agent + 计算 |
-| Day 18 | 多 Tool 串联：Agent 自主决定用哪个工具，多步骤完成任务 | 多工具 Agent |
-| Day 19 | 用 Streamlit 给 Agent 做 UI，能看到它每一步的思考和工具调用 | Agent 可视化界面 |
+| Day 18 | 多工具串联：意图识别 + Plan-then-Execute + Self-Reflection 反思循环 | 多工具 Agent 编排 |
+| Day 19 | 用 Streamlit 给 Agent 做可视化监控台：推理链条 + 工具调用详情 + 会话统计 | Agent 可视化 Dashboard |
 | Day 20 | 进阶：Agent + RAG 结合（Agent 从知识库检索 + 外部搜索 + 综合回答） | Agent + RAG 混合系统 |
 | Day 21 | 周末复盘 + GitHub | Week 3 仓库 |
 

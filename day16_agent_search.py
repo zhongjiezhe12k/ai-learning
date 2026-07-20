@@ -216,7 +216,7 @@ SEARCH_ENGINES = {
 }
 
 # 默认搜索引擎
-DEFAULT_ENGINE = "bing"
+DEFAULT_ENGINE = "bilibili"
 
 print("  已注册搜索引擎：")
 for key, engine in SEARCH_ENGINES.items():

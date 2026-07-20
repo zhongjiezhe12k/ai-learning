@@ -26,7 +26,7 @@ client = OpenAI(
 )
 MODEL = "qwen-plus"
 
-# DeepSeek 客户端（按需使用）
+# DeepSeek 客户端（备用）
 deepseek_client = OpenAI(
     api_key=DEEPSEEK_API_KEY,
     base_url=DEEPSEEK_BASE_URL,
