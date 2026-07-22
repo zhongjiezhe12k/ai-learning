@@ -116,6 +116,9 @@ ai-learning/
 ├── day15_agent_intro.py            # Day 15 — Agent 概念 + Function Calling
 ├── day16_agent_search.py           # Day 16 — Agent + 网页搜索工具
 ├── day17_agent_python.py           # Day 17 — Agent + Python 代码执行
+├── day18_agent_orchestration.py    # Day 18 — 多工具串联：Plan-Execute + Reflection
+├── day19_agent_visual.py           # Day 19 — Streamlit Agent 可视化监控台
+├── day20_agent_rag.py              # Day 20 — Agent + RAG 混合系统 ⭐
 │
 ├── data/
 │   ├── ai_knowledge_base.txt       # 知识库文档（TXT）
@@ -158,18 +161,18 @@ ai-learning/
 | Day 13 | Web 界面 | Streamlit RAG 应用 | `day13_rag_webapp.py` ⭐ |
 | Day 14 | 复盘 + GitHub | Week 2 代码整理 | 本仓库 🎉 |
 
-### 🔜 Week 3：AI Agent 助手（7/16 — 7/22）
+### ✅ Week 3：AI Agent 助手（7/16 — 7/22）
 
-> Function Calling + 多工具串联 → Agent 自主搜索网页、执行计算、查询知识库
+> Function Calling + 多工具串联 → Agent 自主搜索网页、执行计算、查询知识库。**5 个工具 + 5 种编排模式。**
 
 | 天 | 内容 | 技能 | 产出 |
 |----|------|------|------|
 | Day 15 | Agent 入门 | Function Calling + Agent 循环 | `day15_agent_intro.py` ✅ |
 | Day 16 | 网页搜索 | Agent + 国内搜索平台 | `day16_agent_search.py` ✅ |
 | Day 17 | 代码执行 | Agent + Python 沙箱 | `day17_agent_python.py` ✅ |
-| Day 18 | 多工具串联 | Agent 自主选择工具 | ⏳ |
-| Day 19 | Web 界面 | Streamlit Agent 可视化 | ⏳ |
-| Day 20 | Agent + RAG | 知识库 + 搜索混合 | ⏳ |
+| Day 18 | 多工具串联 | Plan-Execute + Self-Reflection | `day18_agent_orchestration.py` ✅ |
+| Day 19 | Web 界面 | Streamlit Agent 可视化 | `day19_agent_visual.py` ✅ |
+| Day 20 | Agent + RAG | 知识库 + 搜索 + 混合回答 | `day20_agent_rag.py` ✅ ⭐ |
 | Day 21 | 复盘 | Week 3 代码整理 | ⏳ |
 
 ### 🔜 Week 4：全栈整合部署（7/19 — 7/25）
