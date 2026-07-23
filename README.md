@@ -120,6 +120,8 @@ ai-learning/
 ├── day19_agent_visual.py           # Day 19 — Streamlit Agent 可视化监控台
 ├── day20_agent_rag.py              # Day 20 — Agent + RAG 混合系统 ⭐
 │
+├── day22_fastapi_backend.py         # Day 22 — FastAPI 后端 API ⭐
+│
 ├── data/
 │   ├── ai_knowledge_base.txt       # 知识库文档（TXT）
 │   └── sample_ai_guide.pdf         # 示例 PDF 文档
@@ -176,9 +178,19 @@ ai-learning/
 | Day 20 | Agent + RAG | 知识库 + 搜索 + 混合回答 | `day20_agent_rag.py` ✅ ⭐ |
 | Day 21 | 复盘 | Week 3 代码整理 | `docs/week3-review.md` ✅ |
 
-### 🔜 Week 4：全栈整合部署（7/19 — 7/25）
+### 🚀 Week 4：全栈整合部署（7/22 — 7/25）
 
 > FastAPI + Streamlit + 部署上线 → 有公网链接的完整 AI 产品
+
+| 天 | 内容 | 技能 | 产出 |
+|----|------|------|------|
+| Day 22 | FastAPI 后端 | Agent+RAG 系统 → REST API | `day22_fastapi_backend.py` ✅ |
+| Day 23 | API 完善 + 测试 | 参数校验 + 错误处理 + 文档 | ⏳ |
+| Day 24-25 | 前后端联通 | Streamlit ↔ FastAPI | ⏳ |
+| Day 26-27 | 专业 README | 架构图 + Demo + 安装 | ⏳ |
+| Day 28 | 部署上线 | 公网链接 | ⏳ |
+| Day 29 | 简历更新 | 项目经验描述 | ⏳ |
+| Day 30 | 总复盘 | 🎉 | ⏳ |
 
 ---
 

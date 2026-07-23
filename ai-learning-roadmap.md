@@ -32,6 +32,7 @@
 | Day 19 | 2026-07-19 | Streamlit Agent 可视化：推理链条 + 工具调用实时监控 | ✅ 完成 | `day19_agent_visual.py` |
 | Day 20 | 2026-07-22 | Agent + RAG 混合：知识库检索 + 外部搜索 + 来源感知综合 | ✅ 完成 | `day20_agent_rag.py` |
 | Day 21 | 2026-07-23 | 周末复盘 + 代码整理 + GitHub 发布 | ✅ 完成 | `docs/week3-review.md` |
+| Day 22 | 2026-07-23 | FastAPI 后端 API：Agent+RAG → REST API（5端点 + SSE流式 + Swagger） | ✅ 完成 | `day22_fastapi_backend.py` |
 
 ### 环境已就绪
 
@@ -122,7 +123,7 @@
 
 | 天 | 做什么 | 产出 |
 |----|--------|------|
-| Day 22-23 | 用 **FastAPI** 把最有亮点的项目（推荐 RAG 系统）包装成 API | 有 API 接口的 AI 服务 |
+| Day 22 | ⭐ 用 FastAPI 把 Agent+RAG 混合系统包装为 REST API（5端点 + SSE流式 + Swagger文档） | ✅ 完成 `day22_fastapi_backend.py` |
 | Day 24-25 | 前后端联通：Streamlit 前端 ↔ FastAPI 后端 ↔ LLM + 向量库 | 完整全栈 AI 应用 |
 | Day 26-27 | 写 README：项目介绍、架构图、安装步骤、Demo 截图/视频 | 专业级项目首页 |
 | Day 28 | 部署上线（推荐 Railway / HuggingFace Spaces / 阿里云函数计算） | **有公网链接** |
