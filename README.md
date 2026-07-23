@@ -126,7 +126,8 @@ ai-learning/
 │
 ├── docs/
 │   ├── week1-review.md             # Week 1 复盘文档
-│   └── week2-review.md             # Week 2 复盘文档
+│   ├── week2-review.md             # Week 2 复盘文档
+│   └── week3-review.md             # Week 3 复盘文档
 │
 └── ai-learning-roadmap.md          # 30 天学习路线图
 ```
@@ -173,7 +174,7 @@ ai-learning/
 | Day 18 | 多工具串联 | Plan-Execute + Self-Reflection | `day18_agent_orchestration.py` ✅ |
 | Day 19 | Web 界面 | Streamlit Agent 可视化 | `day19_agent_visual.py` ✅ |
 | Day 20 | Agent + RAG | 知识库 + 搜索 + 混合回答 | `day20_agent_rag.py` ✅ ⭐ |
-| Day 21 | 复盘 | Week 3 代码整理 | ⏳ |
+| Day 21 | 复盘 | Week 3 代码整理 | `docs/week3-review.md` ✅ |
 
 ### 🔜 Week 4：全栈整合部署（7/19 — 7/25）
 

@@ -31,7 +31,7 @@
 | Day 18 | 2026-07-18 | 多工具串联：Agent 自主编排（意图识别 + Plan-Execute + Self-Reflection） | ✅ 完成 | `day18_agent_orchestration.py` |
 | Day 19 | 2026-07-19 | Streamlit Agent 可视化：推理链条 + 工具调用实时监控 | ✅ 完成 | `day19_agent_visual.py` |
 | Day 20 | 2026-07-22 | Agent + RAG 混合：知识库检索 + 外部搜索 + 来源感知综合 | ✅ 完成 | `day20_agent_rag.py` |
-| Day 21 | 2026-07-23 | 周末复盘 + 代码整理 + GitHub 发布 | ⏳ 进行中 | `docs/week3-review.md` |
+| Day 21 | 2026-07-23 | 周末复盘 + 代码整理 + GitHub 发布 | ✅ 完成 | `docs/week3-review.md` |
 
 ### 环境已就绪
 
