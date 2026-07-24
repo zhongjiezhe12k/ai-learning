@@ -95,43 +95,43 @@ SEARCH_HEADERS = {
 }
 
 def web_search(query: str, max_results: int = 5, fresh: bool = False) -> str:
-    """
-    B站视频搜索。返回标题 + 发布时间 + 描述 + 链接。
-
-    参数：
-      fresh: True=按最新发布排序（时效性问题必须用），False=按综合相关性排序
-    """
     try:
         order = "pubdate" if fresh else "totalrank"
+        # 换回 /type 端点（数据结构稳定）
         url = (
             f"https://api.bilibili.com/x/web-interface/search/type"
             f"?search_type=video&keyword={query}&order={order}"
         )
-        resp = requests.get(url, headers=SEARCH_HEADERS, timeout=8)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+            "Referer": "https://www.bilibili.com/",
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+            "Origin": "https://www.bilibili.com",
+            "Connection": "keep-alive",
+        }
+        resp = requests.get(url, headers=headers, timeout=8)
 
-        # 检查 HTTP 状态码
         if resp.status_code != 200:
-            return f"搜索失败：HTTP {resp.status_code}（B站API暂时不可用）"
+            if resp.status_code == 412:
+                _time.sleep(1)
+                # 重试时加上 Cookie（从浏览器复制）
+                retry_headers = {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                    "Referer": "https://www.bilibili.com/",
+                    "Cookie": "buvid3=你的Cookie值"  # ← 可选，但推荐
+                }
+                resp = requests.get(url, headers=retry_headers, timeout=8)
+                if resp.status_code != 200:
+                    return f"搜索失败：HTTP {resp.status_code}（重试后仍失败）"
+            else:
+                return f"搜索失败：HTTP {resp.status_code}"
 
-        # 检查响应是否为空
-        raw_text = resp.text.strip()
-        if not raw_text:
-            return f"搜索失败：B站返回空响应（可能触发了反爬机制，请稍后重试）"
-
-        # 安全解析 JSON
-        try:
-            data = resp.json()
-        except Exception:
-            preview = raw_text[:200].replace("\n", " ")
-            return f"搜索失败：B站返回非JSON数据（{preview}...）"
-
-        # 检查 B站 API 自身的错误码
+        data = resp.json()
         if data.get("code") != 0:
-            err_msg = data.get("message", "未知错误")
-            return f"搜索失败：B站API错误 (code={data.get('code')}) - {err_msg}"
+            return f"搜索失败：{data.get('message', '未知错误')}"
 
         raw = data.get("data", {}).get("result", [])[:max_results]
-
         if not raw:
             return f"B站未找到「{query}」相关结果"
 
@@ -296,10 +296,11 @@ ALL_TOOLS = {
 # ═══════════════════════════════════════════════════════════════
 
 def run_agent_detailed(user_query: str, system_prompt: str,
-                       max_iterations: int, enabled_tools: list[str]) -> dict:
+                       max_iterations: int, enabled_tools: list[str],
+                       history: list = None) -> dict:
     """
     运行 Agent 并采集每一步的详细数据。
-
+    history:之前的对话列表
     返回：
       {
         "answer": str,
@@ -319,6 +320,7 @@ def run_agent_detailed(user_query: str, system_prompt: str,
 
     messages = [
         {"role": "system", "content": system_prompt},
+        *history,
         {"role": "user", "content": user_query},
     ]
 
@@ -651,7 +653,14 @@ if user_input:
         # 记录用户消息
         st.session_state.chat_history.append({"role": "user", "content": user_input})
 
-        # 运行 Agent
+        #提取历史（排除刚添加的当前用户消息
+        history = [
+            {"role": m["role"], "content": m["content"]}
+            for m in st.session_state.chat_history[:-1]   # 去掉最后一条（当前用户）
+            if m["role"] in ("user", "assistant")
+        ]
+
+        
         with st.spinner("🤔 Agent 正在思考..."):
             t_start = _time.time()
             result = run_agent_detailed(
@@ -659,6 +668,7 @@ if user_input:
                 system_prompt=system_prompt,
                 max_iterations=max_iterations,
                 enabled_tools=enabled_tools,
+                history=history,
             )
             elapsed = _time.time() - t_start
 
