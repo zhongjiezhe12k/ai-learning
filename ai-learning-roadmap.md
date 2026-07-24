@@ -34,6 +34,7 @@
 | Day 21 | 2026-07-23 | 周末复盘 + 代码整理 + GitHub 发布 | ✅ 完成 | `docs/week3-review.md` |
 | Day 22 | 2026-07-23 | FastAPI 后端 API：Agent+RAG → REST API（5端点 + SSE流式 + Swagger） | ✅ 完成 | `day22_fastapi_backend.py` |
 | Day 23 | 2026-07-24 | API 完善：会话管理 + 结构化日志 + 限流 + 15个测试用例 | ✅ 完成 | `day23_api_refinement.py` |
+| Day 24-25 | 2026-07-24 | Streamlit 前端 ↔ FastAPI 后端全栈联通（3 Tab + SSE流式） | ✅ 完成 | `day24_streamlit_frontend.py` |
 
 ### 环境已就绪
 
