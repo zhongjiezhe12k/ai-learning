@@ -1,88 +1,151 @@
-# 🤖 AI 应用开发 30 天冲刺
+# 🤖 AI Agent 全栈助手 — 从零到全栈 AI 应用
 
-> 从零到 AI 应用开发工程师 — 一个月系统学习 LLM API → RAG → Agent → 全栈部署
+<div align="center">
 
-**技术栈**：Python · OpenAI SDK · DeepSeek / 通义千问 · Streamlit · LangChain · Chroma · FastAPI
+**30 天 · 3 个项目 · 7,000+ 行代码**
+
+[![Python](https://img.shields.io/badge/Python-3.13-blue)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.139-green)](https://fastapi.tiangolo.com)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.50-red)](https://streamlit.io)
+[![Chroma](https://img.shields.io/badge/Chroma-1.0-orange)](https://trychroma.com)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+
+</div>
 
 ---
 
-## 📊 Week 1 成果：AI 简历分析器
+## 📌 项目简介
 
-第一个完整 AI 应用：输入 JD + 简历，AI 输出匹配度评分 + 逐项技能对照 + 改进建议。
+一个具备 **5 个 AI 工具**、支持**多轮对话**、**自主编排**的智能助手全栈应用。Agent 能自动判断什么时候查知识库、什么时候搜网页、什么时候跑代码——就像一个真正的 AI 工程师。
 
 ```
-┌─────────────────────────────────────────────────┐
-│  📊 AI 简历分析器                                │
-│  ┌──────────────┐  ┌──────────────┐             │
-│  │  📋 JD       │  │  📝 简历     │             │
-│  │              │  │              │             │
-│  └──────────────┘  └──────────────┘             │
-│         🔍 开始分析                               │
-│  ┌─────────────────────────────────────────┐    │
-│  │  🟢 匹配度：78/100  |  强匹配            │    │
-│  │  ✅ Python  ✅ Django  ⚠️ Redis  ❌ CI/CD│    │
-│  │  💪 优势  ⚠️ 差距  🎯 改进建议          │    │
-│  └─────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────┘
+你：对比 RAG 和 Agent 在 2026 年的最新发展，给出学习建议
+
+Agent：→ 📚 知识库检索 "RAG基本原理"
+      → 🔍 搜索 "2026 RAG最新发展"  
+      → 🔍 搜索 "2026 Agent框架对比"
+      → 🐍 Python 综合分析
+      → ✅ 综合回答（标注来源：📚内部资料 + 🔍外部信息）
 ```
 
-### 快速启动
+---
+
+## 🏗️ 系统架构
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     AI Agent 全栈助手                             │
+│                                                                 │
+│  ┌──────────────────┐         HTTP/SSE         ┌──────────────┐ │
+│  │  Streamlit 前端   │ ◄─────────────────────► │ FastAPI 后端  │ │
+│  │                  │                          │              │ │
+│  │  💬 智能对话      │   POST /chat             │  Agent Loop  │ │
+│  │  📊 工具调用可视化 │   POST /chat/stream      │  5 个 Tool   │ │
+│  │  🔄 会话管理      │   POST /session/*        │  限流 + 日志  │ │
+│  │  📚 知识库搜索    │   POST /knowledge/search │  15 个测试   │ │
+│  │  🔍 网页搜索      │   POST /web/search       │              │ │
+│  └──────────────────┘                          └──────┬───────┘ │
+│                                                       │         │
+│                                              ┌────────┴───────┐ │
+│                                              │  工具层         │ │
+│                                              │                │ │
+│                                              │ 📚 知识库检索   │ │
+│                                              │    Chroma 向量库 │ │
+│                                              │    1536 维向量  │ │
+│                                              │                │ │
+│                                              │ 🔍 外部搜索     │ │
+│                                              │    B站 API      │ │
+│                                              │                │ │
+│                                              │ 🐍 Python 执行  │ │
+│                                              │    安全沙箱     │ │
+│                                              │                │ │
+│                                              │ 🔢 数学计算     │ │
+│                                              │ 🕐 日期时间     │ │
+│                                              └────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 快速开始
+
+### 环境要求
+
+- Python 3.10+
+- 百炼 API Key（[免费注册](https://www.aliyun.com/product/bailian)）
+
+### 安装运行
 
 ```bash
-# 1. 克隆 + 安装依赖
-git clone https://github.com/YOUR_USERNAME/ai-learning.git
+# 1. 克隆项目
+git clone https://github.com/zhongjiezhe12k/ai-learning.git
 cd ai-learning
+
+# 2. 安装依赖
 pip install -r requirements.txt
 
-# 2. 配置 API Key
+# 3. 配置 API Key
 cp .env.example .env
-# 编辑 .env，填入你的百炼/DeepSeek API Key
+# 编辑 .env，填入 BAILIAN_API_KEY=你的key
 
-# 3. 运行简历分析器（Web 版）
-streamlit run day6_streamlit_app.py
+# 4. 启动后端
+uvicorn day23_api_refinement:app --host 0.0.0.0 --port 8000
 
-# 4. 或运行 CLI 版
-python day4_resume_analyzer.py --demo
+# 5. 新终端，启动前端
+streamlit run day24_streamlit_frontend.py
 ```
+
+打开 http://localhost:8501 即可使用。API 文档：http://localhost:8000/docs
 
 ---
 
-## 📊 Week 2 成果：RAG 私有文档 AI 问答系统 ⭐
+## ⭐ 核心特性
 
-第二个完整 AI 应用 — 上传 PDF/TXT → AI 基于文档内容回答 → 每个回答标注原文来源。这是 2026 年最核心的 AI 应用形态。
+### Agent 智能编排
 
-```
-┌─────────────────────────────────────────────────┐
-│  📚 私有文档 AI 问答系统                           │
-│  ┌────────────┐  ┌──────────────────────────┐    │
-│  │  📁 上传    │  │  💬 聊天问答              │    │
-│  │  PDF/TXT   │  │  ┌──────────────────────┐│    │
-│  │            │  │  │ 用户：AI 行业发展如何  ││    │
-│  │  参数控制   │  │  │ AI：根据资料显示...[1]  ││    │
-│  │  chunk/    │  │  │                       ││    │
-│  │  overlap   │  │  │ 📎 查看引用来源(5条)   ││    │
-│  │            │  │  │  [资料1] ai_guide.pdf ││    │
-│  │  知识库状态  │  │  │  相似度 0.92       ││    │
-│  └────────────┘  │  └──────────────────────┘│    │
-│                   └──────────────────────────┘    │
-└─────────────────────────────────────────────────┘
-```
+| 场景 | Agent 行为 | 使用的工具 |
+|------|-----------|-----------|
+| 概念/原理/框架 | 查知识库 | 📚 knowledge_base_search |
+| 最新新闻/趋势 | 搜网页 | 🔍 web_search |
+| 数据分析/统计 | 写代码 | 🐍 python_repl |
+| 数学计算 | 快速算 | 🔢 calculator |
+| 混合问题 | 知识库+搜索+Python | 三工具协同 |
 
-**技术亮点**：
-- 全流程 RAG 管线：LangChain Loader → TextSplitter → Embedding → Chroma → LLM 生成
-- 检索质量调优：网格搜索 + Hit@K/MRR 评估指标，找到最优参数
-- 持久化向量存储：重启不丢数据
-- 流式 RAG 回答 + 原文溯源
+### 5 种编排模式
 
-### 快速启动
+| 模式 | 说明 | 适用场景 |
+|------|------|----------|
+| **ReAct** | 推理-行动循环，边走边看 | 探索性任务 |
+| **Intent Routing** | 自动识别意图，选择工具 | 明确类别的问题 |
+| **Plan-Execute** | 先规划再执行 | 复杂多步任务 |
+| **Self-Reflection** | 自我审查 + 迭代改进 | 对质量要求高的场景 |
+| **Source-Aware** | 内外源融合 + 冲突检测 | 需要标注来源的回答 |
 
-```bash
-# 启动 RAG 文档问答系统
-streamlit run day13_rag_webapp.py
+### 生产级特性
 
-# 或命令行运行完整 RAG 管线
-python day11_rag_pipeline.py
-```
+- 🔄 **会话管理**：多轮对话，上下文记忆
+- 📊 **结构化日志**：请求追踪 + 耗时统计
+- 🛡️ **限流保护**：30次/分钟/IP
+- ⚡ **SSE 流式**：实时推送 Agent 推理过程
+- 🧪 **测试覆盖**：15 个单元+集成测试
+- 📖 **自动文档**：Swagger UI + ReDoc
+
+---
+
+## 📡 API 端点
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| `GET` | `/` | 健康检查 + 系统信息 |
+| `GET` | `/tools` | 列出所有可用工具 |
+| `POST` | `/chat` | 主聊天（非流式） |
+| `POST` | `/chat/stream` | 流式聊天（SSE） |
+| `POST` | `/session/create` | 创建会话 |
+| `GET` | `/session/list` | 活跃会话列表 |
+| `GET` | `/session/{id}` | 查看会话历史 |
+| `DELETE` | `/session/{id}` | 删除会话 |
+| `POST` | `/knowledge/search` | 直接搜索知识库 |
+| `POST` | `/web/search` | 直接搜索网页 |
 
 ---
 
@@ -90,148 +153,124 @@ python day11_rag_pipeline.py
 
 ```
 ai-learning/
-├── README.md                       # 项目主页
-├── requirements.txt                # Python 依赖
-├── .env.example                    # API Key 模板（复制为 .env）
-├── .gitignore                      # 排除敏感文件和临时文件
 │
-├── config.py                       # 🔧 全局配置（从 .env 读 Key）
-├── ai_utils.py                     # 🔧 可复用工具模块（重试/流式/异常处理）
+├── README.md                         # 项目主页（你在这里）
+├── requirements.txt                  # Python 依赖
+├── .env.example                      # API Key 配置模板
+├── config.py                         # 全局配置
+├── ai-learning-roadmap.md            # 30 天学习路线
 │
-├── hello_ai.py                     # Day 1 — DeepSeek API 初体验
-├── hello_ai_bailian.py             # Day 1 — 百炼 API 初体验
-├── day2_conversation.py            # Day 2 — 多轮对话 + Token/Temperature
-├── day3_prompt_engineering.py      # Day 3 — Prompt 工程（JSON/CoT）
-├── day4_resume_analyzer.py         # Day 4 — AI 简历分析器 CLI 版 ⭐
-├── day5_streaming_robustness.py    # Day 5 — 流式输出 + 重试 + 异常处理
-├── day6_streamlit_app.py           # Day 6 — Streamlit Web 版 ⭐
+├── 📂 第一阶段：LLM API 基础 (Week 1)
+│   ├── hello_ai.py                   # Day 1  — API 初体验
+│   ├── hello_ai_bailian.py           # Day 1  — 百炼平台
+│   ├── day2_conversation.py          # Day 2  — 多轮对话
+│   ├── day3_prompt_engineering.py    # Day 3  — Prompt 工程
+│   ├── day4_resume_analyzer.py       # Day 4  — AI 简历分析器 ⭐
+│   ├── day5_streaming_robustness.py  # Day 5  — 流式+异常处理
+│   ├── day6_streamlit_app.py         # Day 6  — Web 界面
+│   └── ai_utils.py                   # 工具模块
 │
-├── day8_rag_intro.py               # Day 8 — RAG 入门（全流程 + 示例）
-├── day9_document_loader.py         # Day 9 — 文档加载 & 文本切割实战
-├── day10_embedding_chroma.py       # Day 10 — Embedding 深入 + Chroma 持久化
-├── day11_rag_pipeline.py           # Day 11 — RAG 核心闭环（检索+生成+溯源）
-├── day12_retrieval_tuning.py       # Day 12 — 检索质量调优（网格搜索+指标）
-├── day13_rag_webapp.py             # Day 13 — Streamlit RAG Web 界面 ⭐
+├── 📂 第二阶段：RAG 文档问答 (Week 2)
+│   ├── day8_rag_intro.py             # Day 8  — RAG 入门
+│   ├── day9_document_loader.py       # Day 9  — 文档加载
+│   ├── day10_embedding_chroma.py     # Day 10 — Embedding 深入
+│   ├── day11_rag_pipeline.py         # Day 11 — RAG 闭环
+│   ├── day12_retrieval_tuning.py     # Day 12 — 检索调优
+│   └── day13_rag_webapp.py           # Day 13 — RAG Web ⭐
 │
-├── day15_agent_intro.py            # Day 15 — Agent 概念 + Function Calling
-├── day16_agent_search.py           # Day 16 — Agent + 网页搜索工具
-├── day17_agent_python.py           # Day 17 — Agent + Python 代码执行
-├── day18_agent_orchestration.py    # Day 18 — 多工具串联：Plan-Execute + Reflection
-├── day19_agent_visual.py           # Day 19 — Streamlit Agent 可视化监控台
-├── day20_agent_rag.py              # Day 20 — Agent + RAG 混合系统 ⭐
+├── 📂 第三阶段：AI Agent (Week 3)
+│   ├── day15_agent_intro.py          # Day 15 — Agent 入门
+│   ├── day16_agent_search.py         # Day 16 — +搜索工具
+│   ├── day17_agent_python.py         # Day 17 — +Python执行
+│   ├── day18_agent_orchestration.py  # Day 18 — 多工具编排
+│   ├── day19_agent_visual.py         # Day 19 — 可视化监控
+│   └── day20_agent_rag.py            # Day 20 — Agent+RAG ⭐
 │
-├── day22_fastapi_backend.py         # Day 22 — FastAPI 后端 API ⭐
-├── day23_api_refinement.py          # Day 23 — API 完善 + 生产级特性
-├── day24_streamlit_frontend.py      # Day 24-25 — Streamlit ↔ FastAPI 全栈联通 ⭐
+├── 📂 第四阶段：全栈部署 (Week 4)
+│   ├── day22_fastapi_backend.py      # Day 22 — FastAPI 后端
+│   ├── day23_api_refinement.py       # Day 23 — 生产级完善
+│   └── day24_streamlit_frontend.py   # Day 24-25 — 全栈联通 ⭐
 │
-├── data/
-│   ├── ai_knowledge_base.txt       # 知识库文档（TXT）
-│   └── sample_ai_guide.pdf         # 示例 PDF 文档
+├── data/                             # 知识库文档
+│   ├── ai_knowledge_base.txt
+│   └── sample_ai_guide.pdf
 │
-├── docs/
-│   ├── week1-review.md             # Week 1 复盘文档
-│   ├── week2-review.md             # Week 2 复盘文档
-│   └── week3-review.md             # Week 3 复盘文档
+├── docs/                             # 复盘文档
+│   ├── week1-review.md
+│   ├── week2-review.md
+│   ├── week3-review.md
+│   └── architecture.md               # 系统架构设计文档
 │
-└── ai-learning-roadmap.md          # 30 天学习路线图
+└── chroma_db/                        # Chroma 向量存储
 ```
 
 ---
 
-## 🗓️ 学习进度
+## 📊 项目数据
 
-### ✅ Week 1：打通 API，建立手感（7/2 — 7/4）
-
-| 天 | 内容 | 技能 | 产出 |
-|----|------|------|------|
-| Day 1 | API 调用入门 | OpenAI SDK 双平台调用 | `hello_ai.py` |
-| Day 2 | 核心概念 | Token/Temperature/多轮对话 | `day2_conversation.py` |
-| Day 3 | Prompt 工程 | JSON 输出 + 思维链 CoT | `day3_prompt_engineering.py` |
-| Day 4 | 简历分析器 CLI | 第一个 AI 应用 | `day4_resume_analyzer.py` ⭐ |
-| Day 5 | 生产级代码 | 流式/重试/异常处理 | `ai_utils.py` |
-| Day 6 | Web 界面 | Streamlit | `day6_streamlit_app.py` ⭐ |
-| Day 7 | 复盘 + GitHub | 代码整理 + 发布 | 本仓库 🎉 |
-
-### ✅ Week 2：RAG 私有文档问答系统（7/4 — 7/8）
-
-> LangChain + Chroma + 通义千问 → 上传 PDF，AI 基于文档回答，标注来源。**4181 行代码。**
-
-| 天 | 内容 | 技能 | 产出 |
-|----|------|------|------|
-| Day 8 | RAG 入门 | 全流程概念 + 端到端示例 | `day8_rag_intro.py` |
-| Day 9 | 文档加载 | PDF/TXT 加载 + 文本切割 | `day9_document_loader.py` |
-| Day 10 | 向量嵌入 | Embedding + Chroma 持久化 | `day10_embedding_chroma.py` |
-| Day 11 | RAG 闭环 | 检索 + 生成 + 溯源 | `day11_rag_pipeline.py` |
-| Day 12 | 检索优化 | chunk_size/overlap 网格搜索 | `day12_retrieval_tuning.py` |
-| Day 13 | Web 界面 | Streamlit RAG 应用 | `day13_rag_webapp.py` ⭐ |
-| Day 14 | 复盘 + GitHub | Week 2 代码整理 | 本仓库 🎉 |
-
-### ✅ Week 3：AI Agent 助手（7/16 — 7/22）
-
-> Function Calling + 多工具串联 → Agent 自主搜索网页、执行计算、查询知识库。**5 个工具 + 5 种编排模式。**
-
-| 天 | 内容 | 技能 | 产出 |
-|----|------|------|------|
-| Day 15 | Agent 入门 | Function Calling + Agent 循环 | `day15_agent_intro.py` ✅ |
-| Day 16 | 网页搜索 | Agent + 国内搜索平台 | `day16_agent_search.py` ✅ |
-| Day 17 | 代码执行 | Agent + Python 沙箱 | `day17_agent_python.py` ✅ |
-| Day 18 | 多工具串联 | Plan-Execute + Self-Reflection | `day18_agent_orchestration.py` ✅ |
-| Day 19 | Web 界面 | Streamlit Agent 可视化 | `day19_agent_visual.py` ✅ |
-| Day 20 | Agent + RAG | 知识库 + 搜索 + 混合回答 | `day20_agent_rag.py` ✅ ⭐ |
-| Day 21 | 复盘 | Week 3 代码整理 | `docs/week3-review.md` ✅ |
-
-### 🚀 Week 4：全栈整合部署（7/22 — 7/25）
-
-> FastAPI + Streamlit + 部署上线 → 有公网链接的完整 AI 产品
-
-| 天 | 内容 | 技能 | 产出 |
-|----|------|------|------|
-| Day 22 | FastAPI 后端 | Agent+RAG 系统 → REST API | `day22_fastapi_backend.py` ✅ |
-| Day 23 | API 完善 | 会话管理 + 日志 + 限流 + 测试 | `day23_api_refinement.py` ✅ |
-| Day 24-25 | 前后端联通 | Streamlit ↔ FastAPI 全栈应用 | `day24_streamlit_frontend.py` ✅ ⭐ |
-| Day 26-27 | 专业 README | 架构图 + Demo + 安装 | ⏳ |
-| Day 28 | 部署上线 | 公网链接 | ⏳ |
-| Day 29 | 简历更新 | 项目经验描述 | ⏳ |
-| Day 30 | 总复盘 | 🎉 | ⏳ |
+| 维度 | 数据 |
+|------|------|
+| 总代码行数 | **7,000+** |
+| 代码文件 | 22 个 .py |
+| 学习天数 | 25 天（进行中） |
+| Agent 工具数 | 5 个 |
+| API 端点 | 10 个 |
+| 测试用例 | 15 个 |
+| 向量库文档 | 15 chunks |
+| 复盘文档 | 3 篇（Week 1-3） |
 
 ---
 
-## 🛠️ 技术栈
+## 🗓️ 学习路线
 
-| 层级 | 技术 | 用途 |
+```
+Week 1 ──→ Week 2 ──→ Week 3 ──→ Week 4
+调 API     搭 RAG    做 Agent   全栈上线
+  │          │          │          │
+  ▼          ▼          ▼          ▼
+简历分析器  文档问答   Agent助手   🚀 部署
+(Streamlit) (Chroma)  (5 Tools)  (FastAPI)
+```
+
+完整路线见 [ai-learning-roadmap.md](ai-learning-roadmap.md)，每日复盘见 [docs/](docs/)。
+
+---
+
+## 🎯 核心项目：AI Agent 全栈助手
+
+> ⭐ **这是简历上的主打项目**
+
+### 技术栈
+
+| 层级 | 技术 | 说明 |
 |------|------|------|
-| LLM | 通义千问（百炼）/ DeepSeek | AI 推理引擎 |
-| SDK | OpenAI Python SDK | 统一 API 调用接口 |
-| UI | Streamlit | 纯 Python Web 界面 |
-| 配置 | python-dotenv | 环境变量管理 |
-| RAG 框架 | LangChain | 文档加载 + 切割 + 检索链 |
-| 向量库 | Chroma | 本地向量存储（内存模式） |
-| 后端 | FastAPI | API 化部署 |
-| 部署 | HuggingFace Spaces | 免费公网部署 |
+| LLM | 通义千问 qwen-plus | 百炼 API，免费额度 |
+| 向量库 | Chroma + text-embedding-v2 | 1536 维语义检索 |
+| 后端 | FastAPI + Pydantic | REST API + SSE 流式 |
+| 前端 | Streamlit | 纯 Python Web UI |
+| 搜索 | B站 API | 国内直连，秒级响应 |
+| 沙箱 | 受限 Python REPL | 安全代码执行 |
 
----
+### 面试描述模板
 
-## 🎯 学习策略
-
-**不做的事**：
-- ❌ 啃深度学习数学（反向传播、梯度下降）
-- ❌ 从头训练模型（PyTorch / TensorFlow）
-- ❌ 学前端框架（React / Vue）
-- ❌ 本地部署开源大模型
-
-**只做的事**：
-- ✅ 调 API → 搭 RAG → 做 Agent → 出作品
+> **AI Agent 全栈助手** | Python · FastAPI · Chroma · Streamlit  
+> 设计并实现了一个具备 5 个 Function Calling 工具的 AI Agent 系统：
+> - **多工具自主编排**：Agent 自动判断意图，在知识库检索、网页搜索、Python 执行、数学计算之间自主选择和编排调用顺序
+> - **Agent + RAG 混合架构**：Chroma 向量知识库 + B站外部搜索双通道，来源感知综合（Source-Aware Synthesis），信息冲突时自动检测并标注
+> - **5 种编排模式**：ReAct → Intent Routing → Plan-Execute → Self-Reflection → Source-Aware Synthesis
+> - **前后端分离**：FastAPI REST API（10 端点 + SSE 流式） + Streamlit 全功能前端（会话管理、工具可视化）
+> - **生产级特性**：结构化日志、限流保护、15 个测试用例、自动生成 Swagger 文档
+> - 项目完整可运行，代码 7,000+ 行，有详细的复盘文档和学习路线
 
 ---
 
 ## 👤 关于我
 
-- **黄畅** · 嘉应学院软件工程 2027 届
+- **黄畅** · 嘉应学院 软件工程 2027 届
 - 求职方向：AI 应用开发工程师（实习/应届）
 - 技术栈：Python · Django · MySQL · Docker · Git
 
 ---
 
-> 📌 这个仓库记录了我从零开始学习 AI 应用开发的完整过程。每个 `.py` 文件都可以独立运行，按天数递增展示了技能的逐层叠加。
->
-> 如果你也是 AI 初学者，建议按 Day 1 → Day 7 的顺序阅读代码，每天的文件头部都有详细的学习笔记。
+> 📌 这个仓库记录了我从零开始学习 AI 应用开发的完整过程。
+> 30 天，4 个阶段，从 Hello World 到全栈 AI Agent——每一步都有代码、有笔记、有复盘。
