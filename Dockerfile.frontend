@@ -1,0 +1,35 @@
+# ─── Dockerfile.frontend ───
+# Streamlit 前端服务
+
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# 系统依赖
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python 依赖
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 应用代码（前端不需要 chroma_db 和 data）
+COPY config.py .
+COPY ai_utils.py .
+COPY day24_streamlit_frontend.py .
+
+# Streamlit 配置
+RUN mkdir -p ~/.streamlit
+COPY .streamlit/config.toml /root/.streamlit/config.toml 2>/dev/null || true
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8501/healthz || exit 1
+
+EXPOSE 8501
+
+CMD ["streamlit", "run", "day24_streamlit_frontend.py", \
+     "--server.address=0.0.0.0", \
+     "--server.port=8501", \
+     "--server.headless=true", \
+     "--browser.serverPort=8501"]

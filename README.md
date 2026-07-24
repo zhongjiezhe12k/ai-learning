@@ -191,6 +191,12 @@ ai-learning/
 │   ├── day23_api_refinement.py       # Day 23 — 生产级完善
 │   └── day24_streamlit_frontend.py   # Day 24-25 — 全栈联通 ⭐
 │
+├── Dockerfile.backend                # Day 28 — FastAPI 镜像
+├── Dockerfile.frontend               # Day 28 — Streamlit 镜像
+├── docker-compose.yml                # Day 28 — 三服务编排
+├── nginx.conf                        # Day 28 — 反向代理
+├── deploy.sh                         # Day 28 — 一键部署
+│
 ├── data/                             # 知识库文档
 │   ├── ai_knowledge_base.txt
 │   └── sample_ai_guide.pdf

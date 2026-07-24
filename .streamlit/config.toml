@@ -1,0 +1,11 @@
+# Streamlit 部署配置
+[server]
+headless = true
+port = 8501
+enableCORS = false
+enableXsrfProtection = false
+enableWebsocketCompression = true
+
+[browser]
+serverAddress = "localhost"
+gatherUsageStats = false
