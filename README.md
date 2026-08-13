@@ -191,11 +191,8 @@ ai-learning/
 │   ├── day23_api_refinement.py       # Day 23 — 生产级完善
 │   └── day24_streamlit_frontend.py   # Day 24-25 — 全栈联通 ⭐
 │
-├── Dockerfile.backend                # Day 28 — FastAPI 镜像
-├── Dockerfile.frontend               # Day 28 — Streamlit 镜像
-├── docker-compose.yml                # Day 28 — 三服务编排
+├── deploy-no-docker.sh               # Day 28 — 直接部署脚本（venv + systemd + Nginx）
 ├── nginx.conf                        # Day 28 — 反向代理
-├── deploy.sh                         # Day 28 — 一键部署
 │
 ├── data/                             # 知识库文档
 │   ├── ai_knowledge_base.txt
@@ -274,7 +271,7 @@ Week 1 ──→ Week 2 ──→ Week 3 ──→ Week 4
 
 - **黄畅** · 嘉应学院 软件工程 2027 届
 - 求职方向：AI 应用开发工程师（实习/应届）
-- 技术栈：Python · Django · MySQL · Docker · Git
+- 技术栈：Python · Django · MySQL · Nginx · Git
 
 ---
 

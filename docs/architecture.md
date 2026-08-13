@@ -15,7 +15,7 @@ AI Agent 全栈助手是一个具备多工具自主编排能力的智能对话�
 - **可演示**：前后端分离，Streamlit Web UI，一键启动
 - **可扩展**：工具插件式注册，新增工具只需添加 schema + function
 - **可维护**：清晰的分层架构，完善的测试和日志
-- **可部署**：FastAPI 标准化 REST API，支持 Docker 化
+- **可部署**：FastAPI 标准化 REST API，配套一键部署脚本（systemd + Nginx）
 
 ---
 

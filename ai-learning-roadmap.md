@@ -36,7 +36,7 @@
 | Day 23 | 2026-07-24 | API 完善：会话管理 + 结构化日志 + 限流 + 15个测试用例 | ✅ 完成 | `day23_api_refinement.py` |
 | Day 24-25 | 2026-07-24 | Streamlit 前端 ↔ FastAPI 后端全栈联通（3 Tab + SSE流式） | ✅ 完成 | `day24_streamlit_frontend.py` |
 | Day 26-27 | 2026-07-24 | 专业 README + 系统架构设计文档 | ✅ 完成 | `README.md` `docs/architecture.md` |
-| Day 28 | 2026-07-24 | Docker 化部署：Dockerfile × 2 + docker-compose + nginx + 阿里云部署指南 | ✅ 完成 | `Dockerfile.*` `docker-compose.yml` `docs/deployment-guide.md` |
+| Day 28 | 2026-07-24 | 部署上线：一键部署脚本 + Nginx 反向代理 + systemd 服务 + 阿里云部署 | ✅ 完成 | `deploy-no-docker.sh` `nginx.conf` |
 
 ### 环境已就绪
 
